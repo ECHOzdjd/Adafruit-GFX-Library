@@ -419,6 +419,30 @@ void Adafruit_GFX::drawTriangle(int16_t x0, int16_t y0,
     drawLine(x2, y2, x0, y0, color);
 }
 
+// Draw a regular polygon with specified number of sides
+void Adafruit_GFX::drawPolygon(int16_t x0, int16_t y0, int16_t radius, uint8_t num_sides, uint16_t color)
+{
+    // Ensure minimum 3 sides
+    if (num_sides < 3)
+        num_sides = 3;
+
+    float angle_step = 2 * PI / num_sides;
+    int16_t x1, y1, x2, y2;
+
+    for (uint8_t i = 0; i < num_sides; i++)
+    {
+        float angle1 = i * angle_step - PI / 2;
+        float angle2 = (i + 1) * angle_step - PI / 2;
+
+        x1 = x0 + radius * cos(angle1);
+        y1 = y0 + radius * sin(angle1);
+        x2 = x0 + radius * cos(angle2);
+        y2 = y0 + radius * sin(angle2);
+
+        drawLine(x1, y1, x2, y2, color);
+    }
+}
+
 // Fill a triangle
 void Adafruit_GFX::fillTriangle(int16_t x0, int16_t y0,
         int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color) {
