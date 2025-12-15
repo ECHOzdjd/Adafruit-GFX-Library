@@ -419,6 +419,31 @@ void Adafruit_GFX::drawTriangle(int16_t x0, int16_t y0,
     drawLine(x2, y2, x0, y0, color);
 }
 
+// Draw a star with specified number of points
+void Adafruit_GFX::drawStar(int16_t x0, int16_t y0, int16_t outer_radius, int16_t inner_radius, uint8_t num_points, uint16_t color) {
+    // Default to 5-pointed star if num_points is invalid
+    if (num_points < 3) num_points = 5;
+    
+    float angle_step = 2 * PI / (num_points * 2);
+    int16_t x1, y1, x2, y2;
+    
+    for (uint8_t i = 0; i < num_points * 2; i++) {
+        float angle1 = i * angle_step - PI / 2;
+        float angle2 = (i + 1) * angle_step - PI / 2;
+        
+        // Alternate between outer and inner radius
+        int16_t radius1 = (i % 2 == 0) ? outer_radius : inner_radius;
+        int16_t radius2 = ((i + 1) % 2 == 0) ? outer_radius : inner_radius;
+        
+        x1 = x0 + radius1 * cos(angle1);
+        y1 = y0 + radius1 * sin(angle1);
+        x2 = x0 + radius2 * cos(angle2);
+        y2 = y0 + radius2 * sin(angle2);
+        
+        drawLine(x1, y1, x2, y2, color);
+    }
+}
+
 // Fill a triangle
 void Adafruit_GFX::fillTriangle(int16_t x0, int16_t y0,
         int16_t x1, int16_t y1, int16_t x2, int16_t y2, uint16_t color) {
